@@ -1,6 +1,20 @@
+import itertools
+import warnings
+
 import numpy as np
 import pandas as pd
 import math
+import itertools
+import warnings
+
+import scipy.optimize
+import scipy.stats as st
+
+import bebi103
+
+import tqdm
+
+import numba
 
 def ecdf_vals(data):
     '''Return the ECDF values for values of x in a given data in the form of an array'''
@@ -110,3 +124,55 @@ def DKW_inequality(alpha, x, data):
         upper.append(high)
     
     return lower, upper
+
+def draw_bs_reps_mle(mle_fun, data, args=(), size=1, progress_bar=False):
+    """Draw nonparametric bootstrap replicates of maximum likelihood estimator.
+
+    Parameters
+    ----------
+    mle_fun : function
+        Function with call signature mle_fun(data, *args) that computes
+        a MLE for the parameters
+    data : one-dimemsional Numpy array
+        Array of measurements
+    args : tuple, default ()
+        Arguments to be passed to `mle_fun()`.
+    size : int, default 1
+        Number of bootstrap replicates to draw.
+    progress_bar : bool, default False
+        Whether or not to display progress bar.
+
+    Returns
+    -------
+    output : numpy array
+        Bootstrap replicates of MLEs.
+    """
+    if progress_bar:
+        iterator = tqdm.tqdm(range(size))
+    else:
+        iterator = range(size)
+
+    return np.array([mle_fun(draw_bs_sample(data), *args) for _ in iterator])
+
+@numba.njit
+def draw_perm_sample(x, y):
+    """Generate a permutation sample."""
+    concat_data = np.concatenate((x, y))
+    np.random.shuffle(concat_data)
+
+    return concat_data[:len(x)], concat_data[len(x):]
+
+
+def draw_perm_reps(x, y, stat_fun, size=1):
+    """Generate array of permuation replicates."""
+    return np.array([stat_fun(*draw_perm_sample(x, y)) for _ in range(size)])
+
+@numba.njit
+def draw_perm_reps_diff_mean(x, y, size=1):
+    """Generate array of permuation replicates."""
+    out = np.empty(size)
+    for i in range(size):
+        x_perm, y_perm = draw_perm_sample(x, y)
+        out[i] = np.mean(x_perm) - np.mean(y_perm)
+
+    return out
