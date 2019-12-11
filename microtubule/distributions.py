@@ -148,7 +148,7 @@ def mle_poisson_2(t):
     else:
         raise RuntimeError('Convergence failed with message', res.message)
         
-def AIC_df(data)       
+def AIC_df(data):      
     # make a dataframe to store all the data
     df_mle = pd.DataFrame(index=['alpha', 'beta', 'b1', 'b2'])
 
