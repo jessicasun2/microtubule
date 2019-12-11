@@ -3,6 +3,8 @@ import pandas as pd
 
 import bokeh_catplot
 
+import bebi103
+
 import bokeh.io
 import bokeh.plotting
 from bokeh.plotting import figure
@@ -92,4 +94,6 @@ def plot_DKW_inequal(data):
     p.legend.location = 'bottom_right'
     
     return p
+
+
 
