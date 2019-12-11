@@ -72,12 +72,12 @@ def mle_gamma(n):
         warnings.simplefilter("ignore")
     alpha_i, beta_i = guess_params(n)
 
-        res = scipy.optimize.minimize(
-            fun=lambda params, n: -log_like_gamma(params, n),
-            x0=np.array([alpha_i, beta_i]),
-            args=(n,),
-            method='Powell'
-        )
+    res = scipy.optimize.minimize(
+        fun=lambda params, n: -log_like_gamma(params, n),
+        x0=np.array([alpha_i, beta_i]),
+        args=(n,),
+        method='Powell'
+    )
     if res.success:
         return res.x
     else:
@@ -89,12 +89,12 @@ def mle_log_gamma(n):
         warnings.simplefilter("ignore")
     alpha_i, beta_i = guess_params(n)
 
-        res2 = scipy.optimize.minimize(
-            fun=lambda log_params, labeled: -log_like_gamma_log_params(log_params, labeled),
-            x0=np.array([np.log(alpha_i), np.log(beta_i)]),
-            args=(labeled,),
-            method='BFGS'
-        )
+    res = scipy.optimize.minimize(
+        fun=lambda log_params, labeled: -log_like_gamma_log_params(log_params, labeled),
+        x0=np.array([np.log(alpha_i), np.log(beta_i)]),
+        args=(labeled,),
+        method='BFGS'
+    )
     if res.success:
         return res.x
     else:
