@@ -28,7 +28,7 @@ def two_ecdf(data1, data2):
     )
 
     scatter2 =  hv.Scatter(
-        data = ecdf_vals(data2),
+        data = utils.ecdf_vals(data2),
         kdims = ['time to catastrophe (s)'],
         vdims = ['ECDF'],
         label = 'not labeled'
