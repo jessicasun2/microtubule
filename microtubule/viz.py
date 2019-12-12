@@ -21,14 +21,14 @@ import microtubule.distributions as dist
 def two_ecdf(data1, data2):
     '''Returns a scatter plot of two ECDFs overlayed'''
     scatter1 = hv.Scatter(
-        data = utils.ecdf_vals(array_true),
+        data = utils.ecdf_vals(data1),
         kdims = ['time to catastrophe (s)'],
         vdims = ['ECDF'],
         label = 'labeled'
     )
 
     scatter2 =  hv.Scatter(
-        data = ecdf_vals(array_false),
+        data = ecdf_vals(data2),
         kdims = ['time to catastrophe (s)'],
         vdims = ['ECDF'],
         label = 'not labeled'
