@@ -47,7 +47,7 @@ def sim_succ_poisson(process):
     style='staircase'
     )
 
-    return p
+    return bokeh.io.show(p)
 
 def cdf_vs_pdf(process, time, cdf):
     p = bokeh_catplot.ecdf(
